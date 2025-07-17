@@ -1,0 +1,253 @@
+<div class="contact-container">
+  <!-- Hero Section -->
+  <section class="contact-hero">
+    <div class="hero-content">
+      <h1>Contact Us</h1>
+      <p class="hero-subtitle">We'd love to hear from you. Get in touch for reservations, inquiries, or just to say hello!</p>
+      <div class="status-indicator">
+        <span class="status-dot" [class.open]="isOpenNow()" [class.closed]="!isOpenNow()"></span>
+        <span class="status-text">
+          {{ isOpenNow() ? 'Open Now' : 'Closed' }} - Today: {{ getTodaysHours() }}
+        </span>
+      </div>
+    </div>
+  </section>
+
+  <!-- Contact Information & Form Section -->
+  <section class="contact-main">
+    <div class="container">
+      <div class="contact-grid">
+        
+        <!-- Contact Information -->
+        <div class="contact-info">
+          <h2>Get In Touch</h2>
+          <div class="info-cards">
+            <div class="info-card" *ngFor="let info of contactInfo">
+              <div class="info-icon">{{ info.icon }}</div>
+              <div class="info-content">
+                <h3>{{ info.title }}</h3>
+                <div class="info-details">
+                  <p *ngFor="let detail of info.details">{{ detail }}</p>
+                </div>
+                <button *ngIf="info.link" class="info-link" (click)="openExternalLink(info.link)">
+                  {{ info.title === 'Address' ? 'View on Map' : 
+                     info.title === 'Phone' ? 'Call Now' : 
+                     info.title === 'Email' ? 'Send Email' : 'Visit Page' }}
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Opening Hours -->
+          <div class="opening-hours">
+            <h3>Opening Hours</h3>
+            <div class="hours-list">
+              <div class="hour-item" *ngFor="let hour of openingHours" [class.today]="hour.isToday">
+                <span class="day">{{ hour.day }}</span>
+                <span class="hours">{{ hour.hours }}</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Contact Form -->
+        <div class="contact-form-section">
+          <h2>Make a Reservation or Send us a Message</h2>
+          
+          <!-- Success Message -->
+          <div class="success-message" *ngIf="submitSuccess">
+            <div class="success-icon">✅</div>
+            <h3>Thank you for contacting us!</h3>
+            <p>We've received your message and will get back to you within 24 hours.</p>
+          </div>
+
+          <!-- Contact Form -->
+          <form [formGroup]="contactForm" (ngSubmit)="onSubmit()" class="contact-form" *ngIf="!submitSuccess">
+            
+            <!-- Personal Information -->
+            <div class="form-section">
+              <h3>Personal Information</h3>
+              <div class="form-row">
+                <div class="form-group">
+                  <label for="name">Full Name *</label>
+                  <input 
+                    type="text" 
+                    id="name" 
+                    formControlName="name"
+                    [class.error]="isFieldInvalid('name')"
+                    placeholder="Enter your full name">
+                  <div class="error-message" *ngIf="isFieldInvalid('name')">
+                    {{ getFieldError('name') }}
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label for="email">Email Address *</label>
+                  <input 
+                    type="email" 
+                    id="email" 
+                    formControlName="email"
+                    [class.error]="isFieldInvalid('email')"
+                    placeholder="Enter your email address">
+                  <div class="error-message" *ngIf="isFieldInvalid('email')">
+                    {{ getFieldError('email') }}
+                  </div>
+                </div>
+              </div>
+              <div class="form-group">
+                <label for="phone">Phone Number *</label>
+                <input 
+                  type="tel" 
+                  id="phone" 
+                  formControlName="phone"
+                  [class.error]="isFieldInvalid('phone')"
+                  placeholder="Enter your phone number">
+                <div class="error-message" *ngIf="isFieldInvalid('phone')">
+                  {{ getFieldError('phone') }}
+                </div>
+              </div>
+            </div>
+
+            <!-- Reservation Details -->
+            <div class="form-section">
+              <h3>Reservation Details</h3>
+              <div class="form-row">
+                <div class="form-group">
+                  <label for="inquiryType">Type of Inquiry *</label>
+                  <select id="inquiryType" formControlName="inquiryType">
+                    <option *ngFor="let type of reservationTypes" [value]="type.value">
+                      {{ type.label }}
+                    </option>
+                  </select>
+                </div>
+                <div class="form-group">
+                  <label for="partySize">Party Size</label>
+                  <select id="partySize" formControlName="partySize">
+                    <option *ngFor="let size of partySizes" [value]="size.value">
+                      {{ size.label }}
+                    </option>
+                  </select>
+                </div>
+              </div>
+              <div class="form-row">
+                <div class="form-group">
+                  <label for="preferredDate">Preferred Date</label>
+                  <input 
+                    type="date" 
+                    id="preferredDate" 
+                    formControlName="preferredDate">
+                </div>
+                <div class="form-group">
+                  <label for="preferredTime">Preferred Time</label>
+                  <input 
+                    type="time" 
+                    id="preferredTime" 
+                    formControlName="preferredTime">
+                </div>
+              </div>
+            </div>
+
+            <!-- Message -->
+            <div class="form-section">
+              <h3>Your Message</h3>
+              <div class="form-group">
+                <label for="message">Message *</label>
+                <textarea 
+                  id="message" 
+                  formControlName="message"
+                  [class.error]="isFieldInvalid('message')"
+                  rows="5"
+                  placeholder="Tell us about your reservation requirements, dietary restrictions, or any questions you have..."></textarea>
+                <div class="error-message" *ngIf="isFieldInvalid('message')">
+                  {{ getFieldError('message') }}
+                </div>
+              </div>
+              <div class="form-group">
+                <label for="specialRequests">Special Requests</label>
+                <textarea 
+                  id="specialRequests" 
+                  formControlName="specialRequests"
+                  rows="3"
+                  placeholder="Any special dietary requirements, allergies, or celebration details..."></textarea>
+              </div>
+            </div>
+
+            <!-- Newsletter Subscription -->
+            <div class="form-section">
+              <div class="checkbox-group">
+                <input type="checkbox" id="newsletter" formControlName="newsletter">
+                <label for="newsletter">
+                  Subscribe to our newsletter for special offers and updates
+                </label>
+              </div>
+            </div>
+
+            <!-- Submit Button -->
+            <div class="form-actions">
+              <button 
+                type="submit" 
+                class="submit-btn"
+                [disabled]="isSubmitting"
+                [class.loading]="isSubmitting">
+                <span *ngIf="!isSubmitting">Send Message</span>
+                <span *ngIf="isSubmitting">
+                  <span class="spinner"></span>
+                  Sending...
+                </span>
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Map Section -->
+  <section class="map-section">
+    <div class="container">
+      <h2>Find Us</h2>
+      <div class="map-container">
+        <div class="map-placeholder">
+          <div class="map-icon">🗺️</div>
+          <h3>Interactive Map</h3>
+          <p>123 Collins Street, Melbourne VIC 3000</p>
+          <button class="map-btn" (click)="openExternalLink('https://maps.google.com/?q=123+Collins+Street+Melbourne+VIC+3000')">
+            Open in Google Maps
+          </button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Quick Actions -->
+  <section class="quick-actions">
+    <div class="container">
+      <h2>Quick Actions</h2>
+      <div class="actions-grid">
+        <div class="action-card">
+          <div class="action-icon">📞</div>
+          <h3>Call for Reservations</h3>
+          <p>Speak directly with our team</p>
+          <button class="action-btn" (click)="openExternalLink('tel:+61391234567')">
+            Call Now
+          </button>
+        </div>
+        <div class="action-card">
+          <div class="action-icon">🍽️</div>
+          <h3>View Our Menu</h3>
+          <p>Explore our delicious offerings</p>
+          <a routerLink="/menu" class="action-btn">
+            Browse Menu
+          </a>
+        </div>
+        <div class="action-card">
+          <div class="action-icon">🚗</div>
+          <h3>Order Online</h3>
+          <p>Pickup or delivery available</p>
+          <a routerLink="/order" class="action-btn">
+            Order Now
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+</div>

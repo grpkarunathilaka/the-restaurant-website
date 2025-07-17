@@ -1,0 +1,147 @@
+<!-- Hero Section -->
+<section class="hero">
+  <div class="hero-content">
+    <div class="container">
+      <div class="hero-text">
+        <h1 class="hero-title">Welcome to Curry Palace</h1>
+        <p class="hero-subtitle">Experience Authentic Indian Cuisine in the Heart of Melbourne</p>
+        <p class="hero-description">
+          Discover the rich flavors and aromatic spices of traditional Indian cooking. 
+          Our chefs bring you authentic recipes passed down through generations, 
+          using only the freshest ingredients and traditional cooking methods.
+        </p>
+        <div class="hero-buttons">
+          <a routerLink="/menu" class="btn btn-primary">View Our Menu</a>
+          <a routerLink="/order" class="btn btn-secondary">Order Online</a>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="hero-image">
+    <img src="assets/images/hero-bg.jpg" alt="Delicious Indian cuisine at Curry Palace" />
+  </div>
+</section>
+
+<!-- Featured Dishes Section -->
+<section class="section featured-dishes">
+  <div class="container">
+    <div class="section-header text-center">
+      <h2>Our Signature Dishes</h2>
+      <p>Taste the authentic flavors that make Curry Palace special</p>
+    </div>
+    
+    <div class="row">
+      <div class="col-4" *ngFor="let dish of featuredDishes">
+        <div class="card dish-card fade-in">
+          <div class="dish-image">
+            <img [src]="dish.image" [alt]="dish.name" />
+            <div class="spice-level">
+              <span *ngFor="let spice of getSpiceIcons(dish.spiceLevel)">{{ spice }}</span>
+            </div>
+          </div>
+          <div class="card-content">
+            <h3>{{ dish.name }}</h3>
+            <p>{{ dish.description }}</p>
+            <div class="dish-footer">
+              <span class="price">${{ dish.price }}</span>
+              <a routerLink="/order" class="btn btn-outline">Order Now</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    <div class="text-center mt-4">
+      <a routerLink="/menu" class="btn btn-primary">View Full Menu</a>
+    </div>
+  </div>
+</section>
+
+<!-- About Preview Section -->
+<section class="section about-preview">
+  <div class="container">
+    <div class="row align-center">
+      <div class="col-6">
+        <div class="about-content">
+          <h2>Our Story</h2>
+          <p>
+            For over 20 years, Curry Palace has been serving Melbourne's finest Indian cuisine. 
+            Our journey began with a simple mission: to bring the authentic tastes of India to 
+            Australian food lovers.
+          </p>
+          <p>
+            Every dish is prepared with love, using traditional recipes and the finest spices 
+            imported directly from India. Our experienced chefs ensure that each meal delivers 
+            an unforgettable dining experience.
+          </p>
+          <a routerLink="/about" class="btn btn-outline">Learn More About Us</a>
+        </div>
+      </div>
+      <div class="col-6">
+        <div class="about-image">
+          <img src="assets/images/restaurant-interior.jpg" alt="Curry Palace restaurant interior" />
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Customer Reviews Section -->
+<section class="section reviews-preview">
+  <div class="container">
+    <div class="section-header text-center">
+      <h2>What Our Customers Say</h2>
+      <p>Don't just take our word for it - hear from our satisfied customers</p>
+    </div>
+    
+    <div class="row">
+      <div class="col-4" *ngFor="let review of testimonials">
+        <div class="card review-card fade-in">
+          <div class="review-rating">
+            <span *ngFor="let star of getStarIcons(review.rating)">{{ star }}</span>
+          </div>
+          <p class="review-text">"{{ review.comment }}"</p>
+          <div class="review-author">
+            <strong>{{ review.name }}</strong>
+            <span class="review-date">{{ review.date | date:'MMM d, y' }}</span>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    <div class="text-center mt-4">
+      <a routerLink="/reviews" class="btn btn-primary">Read More Reviews</a>
+    </div>
+  </div>
+</section>
+
+<!-- Facebook Feed Section -->
+<section class="section facebook-section">
+  <div class="container">
+    <div class="section-header text-center">
+      <h2>Follow Us on Facebook</h2>
+      <p>Stay updated with our latest dishes, offers, and events</p>
+    </div>
+    
+    <app-facebook-feed></app-facebook-feed>
+    
+    <div class="text-center mt-4">
+      <a href="#" class="btn btn-secondary">Follow Us on Facebook</a>
+    </div>
+  </div>
+</section>
+
+<!-- Call to Action Section -->
+<section class="section cta-section">
+  <div class="container">
+    <div class="cta-content text-center">
+      <h2>Ready to Experience Authentic Indian Cuisine?</h2>
+      <p>Visit us today or order online for pickup and delivery throughout Melbourne</p>
+      <div class="cta-buttons">
+        <a routerLink="/contact" class="btn btn-primary">Find Us</a>
+        <a routerLink="/order" class="btn btn-secondary">Order Now</a>
+        <a href="tel:+61391234567" class="btn btn-outline">Call (03) 9123 4567</a>
+      </div>
+    </div>
+  </div>
+</section>

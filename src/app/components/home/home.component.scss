@@ -1,0 +1,411 @@
+// Hero Section
+.hero {
+  position: relative;
+  height: 100vh;
+  min-height: 600px;
+  display: flex;
+  align-items: center;
+  overflow: hidden;
+  background: linear-gradient(135deg, var(--primary-red) 0%, var(--dark-brown) 100%);
+}
+
+.hero-content {
+  position: relative;
+  z-index: 2;
+  width: 60%;
+  padding: 2rem 0;
+}
+
+.hero-image {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 50%;
+  height: 100%;
+  z-index: 1;
+
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    opacity: 0.3;
+  }
+}
+
+.hero-text {
+  color: var(--white);
+  max-width: 600px;
+}
+
+.hero-title {
+  font-size: 3.5rem;
+  font-weight: 700;
+  margin-bottom: 1rem;
+  color: var(--white);
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+.hero-subtitle {
+  font-size: 1.5rem;
+  margin-bottom: 1.5rem;
+  color: var(--primary-cream);
+  font-weight: 300;
+}
+
+.hero-description {
+  font-size: 1.1rem;
+  line-height: 1.6;
+  margin-bottom: 2rem;
+  color: var(--primary-cream);
+  opacity: 0.9;
+}
+
+.hero-buttons {
+  display: flex;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+// Featured Dishes Section
+.featured-dishes {
+  background-color: var(--light-gray);
+}
+
+.section-header {
+  margin-bottom: 3rem;
+
+  h2 {
+    font-size: 2.5rem;
+    margin-bottom: 1rem;
+  }
+
+  p {
+    font-size: 1.1rem;
+    color: var(--medium-gray);
+  }
+}
+
+.dish-card {
+  height: 100%;
+  transition: transform 0.3s ease;
+
+  &:hover {
+    transform: translateY(-10px);
+  }
+}
+
+.dish-image {
+  position: relative;
+  height: 250px;
+  overflow: hidden;
+
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.3s ease;
+  }
+
+  .spice-level {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    background-color: rgba(255, 255, 255, 0.9);
+    padding: 0.5rem;
+    border-radius: 20px;
+    font-size: 0.8rem;
+  }
+}
+
+.card-content {
+  padding: 1.5rem;
+
+  h3 {
+    font-size: 1.3rem;
+    margin-bottom: 0.5rem;
+    color: var(--primary-red);
+  }
+
+  p {
+    color: var(--medium-gray);
+    margin-bottom: 1.5rem;
+    line-height: 1.5;
+  }
+}
+
+.dish-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  .price {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--accent-gold);
+  }
+}
+
+// About Preview Section
+.about-preview {
+  background-color: var(--white);
+}
+
+.about-content {
+  padding-right: 2rem;
+
+  h2 {
+    font-size: 2.2rem;
+    margin-bottom: 1.5rem;
+  }
+
+  p {
+    font-size: 1.1rem;
+    line-height: 1.7;
+    margin-bottom: 1.5rem;
+    color: var(--medium-gray);
+  }
+}
+
+.about-image {
+  img {
+    width: 100%;
+    height: 400px;
+    object-fit: cover;
+    border-radius: 8px;
+    box-shadow: 0 10px 30px var(--shadow);
+  }
+}
+
+// Reviews Section
+.reviews-preview {
+  background-color: var(--primary-cream);
+}
+
+.review-card {
+  height: 100%;
+  text-align: center;
+  padding: 2rem 1.5rem;
+}
+
+.review-rating {
+  font-size: 1.2rem;
+  margin-bottom: 1rem;
+}
+
+.review-text {
+  font-style: italic;
+  font-size: 1rem;
+  line-height: 1.6;
+  margin-bottom: 1.5rem;
+  color: var(--dark-brown);
+}
+
+.review-author {
+  strong {
+    display: block;
+    color: var(--primary-red);
+    margin-bottom: 0.25rem;
+  }
+
+  .review-date {
+    font-size: 0.9rem;
+    color: var(--medium-gray);
+  }
+}
+
+// Facebook Section
+.facebook-section {
+  background-color: var(--white);
+}
+
+// Call to Action Section
+.cta-section {
+  background: linear-gradient(135deg, var(--primary-red) 0%, var(--dark-brown) 100%);
+  color: var(--white);
+  text-align: center;
+}
+
+.cta-content {
+  h2 {
+    font-size: 2.5rem;
+    color: var(--white);
+    margin-bottom: 1rem;
+  }
+
+  p {
+    font-size: 1.2rem;
+    color: var(--primary-cream);
+    margin-bottom: 2rem;
+  }
+}
+
+.cta-buttons {
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+// Responsive Design
+@media (max-width: 768px) {
+  .hero {
+    height: 80vh;
+    min-height: 500px;
+  }
+
+  .hero-content {
+    width: 100%;
+    padding: 1rem 0;
+  }
+
+  .hero-image {
+    width: 100%;
+    opacity: 0.2;
+  }
+
+  .hero-title {
+    font-size: 2.5rem;
+  }
+
+  .hero-subtitle {
+    font-size: 1.2rem;
+  }
+
+  .hero-description {
+    font-size: 1rem;
+  }
+
+  .hero-buttons {
+    justify-content: center;
+  }
+
+  .section-header {
+    h2 {
+      font-size: 2rem;
+    }
+  }
+
+  .about-content {
+    padding-right: 0;
+    margin-bottom: 2rem;
+  }
+
+  .about-image {
+    img {
+      height: 300px;
+    }
+  }
+
+  .dish-card {
+    margin-bottom: 2rem;
+  }
+
+  .review-card {
+    margin-bottom: 2rem;
+  }
+
+  .cta-content {
+    h2 {
+      font-size: 2rem;
+    }
+
+    p {
+      font-size: 1.1rem;
+    }
+  }
+
+  .cta-buttons {
+    flex-direction: column;
+    align-items: center;
+
+    .btn {
+      width: 200px;
+    }
+  }
+}
+
+@media (max-width: 480px) {
+  .hero {
+    height: 70vh;
+    min-height: 400px;
+  }
+
+  .hero-title {
+    font-size: 2rem;
+  }
+
+  .hero-subtitle {
+    font-size: 1.1rem;
+  }
+
+  .hero-buttons {
+    flex-direction: column;
+    align-items: center;
+
+    .btn {
+      width: 200px;
+    }
+  }
+
+  .section-header {
+    margin-bottom: 2rem;
+
+    h2 {
+      font-size: 1.8rem;
+    }
+  }
+
+  .dish-image {
+    height: 200px;
+  }
+
+  .card-content {
+    padding: 1rem;
+
+    h3 {
+      font-size: 1.2rem;
+    }
+  }
+
+  .dish-footer {
+    .price {
+      font-size: 1.3rem;
+    }
+  }
+
+  .about-content {
+    h2 {
+      font-size: 1.8rem;
+    }
+
+    p {
+      font-size: 1rem;
+    }
+  }
+
+  .cta-content {
+    h2 {
+      font-size: 1.8rem;
+    }
+
+    p {
+      font-size: 1rem;
+    }
+  }
+}
+
+// Animation Classes
+.fade-in {
+  animation: fadeInUp 0.6s ease-out;
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}

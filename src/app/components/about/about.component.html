@@ -1,0 +1,168 @@
+<div class="about-container">
+  <!-- Hero Section -->
+  <section class="about-hero">
+    <div class="hero-content">
+      <h1>About Curry Palace</h1>
+      <p class="hero-subtitle">Bringing authentic Indian flavors to Melbourne since 2016</p>
+    </div>
+    <div class="hero-image">
+      <img src="assets/images/restaurant-interior.jpg" alt="Curry Palace Restaurant Interior" 
+           onerror="this.style.display='none'; this.nextElementSibling.style.display='flex'">
+      <div class="image-placeholder" style="display: none;">🏛️</div>
+    </div>
+  </section>
+
+  <!-- Our Story Section -->
+  <section class="our-story">
+    <div class="container">
+      <div class="story-content">
+        <div class="story-text">
+          <h2>Our Story</h2>
+          <p>
+            Curry Palace was born from a dream to share the rich culinary heritage of India with the vibrant city of Melbourne. 
+            Founded in 2016 by Chef Rajesh Kumar, our restaurant has become a beloved destination for authentic Indian cuisine.
+          </p>
+          <p>
+            What started as a small family restaurant has grown into a cornerstone of Melbourne's dining scene, 
+            serving traditional recipes passed down through generations. Every dish tells a story of our homeland, 
+            prepared with love and the finest ingredients.
+          </p>
+          <p>
+            We believe that food is more than sustenance—it's a bridge between cultures, a way to bring people together, 
+            and a celebration of life's most precious moments. At Curry Palace, every meal is a journey through the 
+            diverse flavors of India.
+          </p>
+        </div>
+        <div class="story-stats">
+          <div class="stat-item">
+            <div class="stat-number">{{ restaurantStats.yearsInBusiness }}</div>
+            <div class="stat-label">Years in Business</div>
+          </div>
+          <div class="stat-item">
+            <div class="stat-number">{{ restaurantStats.happyCustomers }}</div>
+            <div class="stat-label">Happy Customers</div>
+          </div>
+          <div class="stat-item">
+            <div class="stat-number">{{ restaurantStats.dishesServed }}</div>
+            <div class="stat-label">Dishes Served</div>
+          </div>
+          <div class="stat-item">
+            <div class="stat-number">{{ restaurantStats.teamMembers }}</div>
+            <div class="stat-label">Team Members</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Our Values Section -->
+  <section class="our-values">
+    <div class="container">
+      <h2>Our Values</h2>
+      <div class="values-grid">
+        <div class="value-item">
+          <div class="value-icon">🌿</div>
+          <h3>Authenticity</h3>
+          <p>We stay true to traditional Indian cooking methods and recipes, using authentic spices and techniques passed down through generations.</p>
+        </div>
+        <div class="value-item">
+          <div class="value-icon">🥘</div>
+          <h3>Quality</h3>
+          <p>Only the finest ingredients make it to your plate. We source fresh produce daily and grind our spices in-house for maximum flavor.</p>
+        </div>
+        <div class="value-item">
+          <div class="value-icon">❤️</div>
+          <h3>Hospitality</h3>
+          <p>Indian hospitality is legendary, and we bring that warmth to every interaction. You're not just a customer—you're family.</p>
+        </div>
+        <div class="value-item">
+          <div class="value-icon">🌍</div>
+          <h3>Community</h3>
+          <p>We're proud to be part of Melbourne's diverse community, celebrating multiculturalism through the universal language of food.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Meet Our Team Section -->
+  <section class="our-team">
+    <div class="container">
+      <h2>Meet Our Team</h2>
+      <p class="team-intro">The passionate people behind every delicious meal</p>
+      <div class="team-grid">
+        <div class="team-member" *ngFor="let member of teamMembers">
+          <div class="member-image">
+            <img [src]="member.image" [alt]="member.name" 
+                 onerror="this.style.display='none'; this.nextElementSibling.style.display='flex'">
+            <div class="image-placeholder" style="display: none;">👨‍🍳</div>
+          </div>
+          <div class="member-info">
+            <h3>{{ member.name }}</h3>
+            <h4>{{ member.role }}</h4>
+            <p>{{ member.description }}</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Awards & Recognition Section -->
+  <section class="awards">
+    <div class="container">
+      <h2>Awards & Recognition</h2>
+      <p class="awards-intro">Celebrating our journey of excellence</p>
+      <div class="awards-timeline">
+        <div class="achievement" *ngFor="let achievement of achievements">
+          <div class="achievement-year">{{ achievement.year }}</div>
+          <div class="achievement-content">
+            <div class="achievement-icon">{{ achievement.icon }}</div>
+            <div class="achievement-details">
+              <h3>{{ achievement.title }}</h3>
+              <p>{{ achievement.description }}</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Our Commitment Section -->
+  <section class="commitment">
+    <div class="container">
+      <div class="commitment-content">
+        <h2>Our Commitment</h2>
+        <div class="commitment-grid">
+          <div class="commitment-item">
+            <div class="commitment-icon">🌱</div>
+            <h3>Sustainability</h3>
+            <p>We're committed to sustainable practices, from sourcing local ingredients to minimizing food waste and using eco-friendly packaging.</p>
+          </div>
+          <div class="commitment-item">
+            <div class="commitment-icon">🥗</div>
+            <h3>Health & Nutrition</h3>
+            <p>We offer a variety of healthy options including vegan, gluten-free, and low-sodium dishes without compromising on taste.</p>
+          </div>
+          <div class="commitment-item">
+            <div class="commitment-icon">🎓</div>
+            <h3>Continuous Learning</h3>
+            <p>Our team regularly trains and explores new techniques while respecting traditional methods to bring you the best dining experience.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Call to Action Section -->
+  <section class="cta-section">
+    <div class="container">
+      <div class="cta-content">
+        <h2>Experience Our Story</h2>
+        <p>Join us for an authentic Indian dining experience that celebrates tradition, flavor, and community.</p>
+        <div class="cta-buttons">
+          <a routerLink="/menu" class="btn btn-primary">View Our Menu</a>
+          <a routerLink="/contact" class="btn btn-secondary">Make a Reservation</a>
+        </div>
+      </div>
+    </div>
+  </section>
+</div>

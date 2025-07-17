@@ -1,0 +1,70 @@
+<div class="facebook-feed">
+  <!-- Loading State -->
+  <div *ngIf="loading" class="loading-container">
+    <div class="loading-spinner">
+      <div class="loading"></div>
+      <p>Loading latest posts...</p>
+    </div>
+  </div>
+
+  <!-- Error State -->
+  <div *ngIf="error && !loading" class="error-container">
+    <div class="error-message">
+      <h4>Unable to load Facebook posts</h4>
+      <p>We're having trouble connecting to Facebook right now. Please try again later.</p>
+      <button class="btn btn-outline" (click)="retryLoad()">Try Again</button>
+    </div>
+  </div>
+
+  <!-- Posts Display -->
+  <div *ngIf="!loading && !error" class="posts-container">
+    <div class="row">
+      <div class="col-4" *ngFor="let post of posts">
+        <div class="card facebook-post fade-in">
+          <!-- Post Image -->
+          <div class="post-image" *ngIf="post.full_picture">
+            <img [src]="post.full_picture" [alt]="'Facebook post image'" />
+          </div>
+
+          <!-- Post Content -->
+          <div class="post-content">
+            <!-- Facebook Icon and Header -->
+            <div class="post-header">
+              <div class="facebook-icon">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="#1877F2">
+                  <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/>
+                </svg>
+              </div>
+              <div class="post-info">
+                <strong>Curry Palace</strong>
+                <span class="post-time">{{ getTimeAgo(post.created_time) }}</span>
+              </div>
+            </div>
+
+            <!-- Post Message -->
+            <div class="post-message" *ngIf="post.message">
+              <p>{{ post.message }}</p>
+            </div>
+
+            <!-- Post Story (for posts without message) -->
+            <div class="post-story" *ngIf="post.story && !post.message">
+              <p>{{ post.story }}</p>
+            </div>
+
+            <!-- Post Actions -->
+            <div class="post-actions">
+              <a [href]="post.permalink_url" target="_blank" rel="noopener noreferrer" class="btn btn-outline btn-sm">
+                View on Facebook
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- No Posts Message -->
+    <div *ngIf="posts.length === 0" class="no-posts">
+      <p>No recent posts available. Check back later!</p>
+    </div>
+  </div>
+</div>

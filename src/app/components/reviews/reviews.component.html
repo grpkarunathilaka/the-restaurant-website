@@ -1,0 +1,303 @@
+<div class="reviews-container">
+  <!-- Hero Section -->
+  <section class="reviews-hero">
+    <div class="container">
+      <div class="hero-content">
+        <h1>Customer Reviews</h1>
+        <p class="hero-subtitle">See what our customers are saying about their Curry Palace experience</p>
+        
+        <!-- Overall Rating Stats -->
+        <div class="rating-overview">
+          <div class="overall-rating">
+            <div class="rating-score">
+              <span class="score">{{ reviewStats.averageRating | number:'1.1-1' }}</span>
+              <div class="stars">
+                <span 
+                  *ngFor="let star of getStarArray(Math.round(reviewStats.averageRating))" 
+                  class="star filled">★</span>
+                <span 
+                  *ngFor="let star of getStarArray(5 - Math.round(reviewStats.averageRating))" 
+                  class="star">★</span>
+              </div>
+              <p class="total-reviews">Based on {{ reviewStats.totalReviews }} reviews</p>
+            </div>
+            
+            <div class="rating-breakdown">
+              <div class="rating-bar" *ngFor="let rating of [5,4,3,2,1]">
+                <span class="rating-label">{{ rating }} ★</span>
+                <div class="bar-container">
+                  <div class="bar-fill" [style.width.%]="getRatingPercentage(rating)"></div>
+                </div>
+                <span class="rating-count">{{ reviewStats.ratingDistribution[rating] }}</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Success Message -->
+  <div class="success-notification" [class.show]="showSuccessMessage">
+    <div class="notification-content">
+      <span class="success-icon">✅</span>
+      <span class="success-text">Thank you! Your review has been submitted successfully.</span>
+    </div>
+  </div>
+
+  <!-- Main Content -->
+  <div class="container">
+    <div class="reviews-main">
+      <div class="reviews-layout">
+        <!-- Reviews List Section -->
+        <section class="reviews-section">
+          <div class="section-header">
+            <h2>Customer Reviews</h2>
+            
+            <!-- Filter Options -->
+            <div class="review-filters">
+              <button 
+                class="filter-btn" 
+                [class.active]="currentFilter === 'all'"
+                (click)="setFilter('all')">
+                <span class="filter-icon">📋</span>
+                <span class="filter-text">All Reviews</span>
+              </button>
+              <button 
+                class="filter-btn" 
+                [class.active]="currentFilter === 'recent'"
+                (click)="setFilter('recent')">
+                <span class="filter-icon">🕒</span>
+                <span class="filter-text">Recent</span>
+              </button>
+              <button 
+                class="filter-btn" 
+                [class.active]="currentFilter === 'highest'"
+                (click)="setFilter('highest')">
+                <span class="filter-icon">⭐</span>
+                <span class="filter-text">5 Stars</span>
+              </button>
+              <button 
+                class="filter-btn" 
+                [class.active]="currentFilter === 'verified'"
+                (click)="setFilter('verified')">
+                <span class="filter-icon">✅</span>
+                <span class="filter-text">Verified</span>
+              </button>
+            </div>
+          </div>
+
+          <!-- Reviews Grid -->
+          <div class="reviews-grid">
+            <div class="review-card" *ngFor="let review of filteredReviews">
+              <div class="review-header">
+                <div class="reviewer-info">
+                  <div class="reviewer-avatar">{{ review.avatar }}</div>
+                  <div class="reviewer-details">
+                    <h3 class="reviewer-name">{{ review.name }}</h3>
+                    <div class="review-meta">
+                      <span class="review-date">{{ formatDate(review.date) }}</span>
+                      <span class="review-type" *ngIf="review.orderType">{{ review.orderType }}</span>
+                      <span class="verified-badge" *ngIf="review.verified">✅ Verified</span>
+                    </div>
+                  </div>
+                </div>
+                
+                <div class="review-rating">
+                  <div class="stars">
+                    <span 
+                      *ngFor="let star of getStarArray(review.rating)" 
+                      class="star filled">★</span>
+                    <span 
+                      *ngFor="let star of getStarArray(5 - review.rating)" 
+                      class="star">★</span>
+                  </div>
+                </div>
+              </div>
+
+              <div class="review-content">
+                <p class="review-comment">{{ review.comment }}</p>
+                <div class="review-details" *ngIf="review.favoriteItem">
+                  <span class="favorite-item">
+                    <span class="detail-icon">🍛</span>
+                    <span class="detail-text">Favorite: {{ review.favoriteItem }}</span>
+                  </span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- No Reviews Message -->
+          <div class="no-reviews" *ngIf="filteredReviews.length === 0">
+            <div class="no-reviews-icon">📝</div>
+            <h3>No reviews found</h3>
+            <p>Try adjusting your filter or be the first to leave a review!</p>
+          </div>
+        </section>
+
+        <!-- Review Form Section -->
+        <section class="review-form-section">
+          <div class="form-container">
+            <div class="form-header">
+              <h2>Share Your Experience</h2>
+              <p>We'd love to hear about your dining experience at Curry Palace</p>
+            </div>
+
+            <form [formGroup]="reviewForm" (ngSubmit)="onSubmitReview()" class="review-form">
+              <!-- Personal Information -->
+              <div class="form-section">
+                <h3>Your Information</h3>
+                <div class="form-row">
+                  <div class="form-group">
+                    <label for="name">Full Name *</label>
+                    <input 
+                      type="text" 
+                      id="name" 
+                      formControlName="name"
+                      placeholder="Enter your full name"
+                      [class.error]="reviewForm.get('name')?.invalid && reviewForm.get('name')?.touched">
+                    <div class="error-message" *ngIf="getFieldError('name')">
+                      {{ getFieldError('name') }}
+                    </div>
+                  </div>
+                  
+                  <div class="form-group">
+                    <label for="email">Email Address *</label>
+                    <input 
+                      type="email" 
+                      id="email" 
+                      formControlName="email"
+                      placeholder="Enter your email address"
+                      [class.error]="reviewForm.get('email')?.invalid && reviewForm.get('email')?.touched">
+                    <div class="error-message" *ngIf="getFieldError('email')">
+                      {{ getFieldError('email') }}
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Rating Section -->
+              <div class="form-section">
+                <h3>Your Rating</h3>
+                <div class="rating-input">
+                  <label>Overall Rating *</label>
+                  <div class="star-rating">
+                    <input 
+                      type="radio" 
+                      id="star5" 
+                      name="rating" 
+                      value="5" 
+                      formControlName="rating">
+                    <label for="star5" class="star-label">★</label>
+                    
+                    <input 
+                      type="radio" 
+                      id="star4" 
+                      name="rating" 
+                      value="4" 
+                      formControlName="rating">
+                    <label for="star4" class="star-label">★</label>
+                    
+                    <input 
+                      type="radio" 
+                      id="star3" 
+                      name="rating" 
+                      value="3" 
+                      formControlName="rating">
+                    <label for="star3" class="star-label">★</label>
+                    
+                    <input 
+                      type="radio" 
+                      id="star2" 
+                      name="rating" 
+                      value="2" 
+                      formControlName="rating">
+                    <label for="star2" class="star-label">★</label>
+                    
+                    <input 
+                      type="radio" 
+                      id="star1" 
+                      name="rating" 
+                      value="1" 
+                      formControlName="rating">
+                    <label for="star1" class="star-label">★</label>
+                  </div>
+                  <p class="rating-description">Click on stars to rate your experience</p>
+                </div>
+              </div>
+
+              <!-- Order Details -->
+              <div class="form-section">
+                <h3>Order Details</h3>
+                <div class="form-row">
+                  <div class="form-group">
+                    <label for="orderType">Order Type *</label>
+                    <select 
+                      id="orderType" 
+                      formControlName="orderType"
+                      [class.error]="reviewForm.get('orderType')?.invalid && reviewForm.get('orderType')?.touched">
+                      <option value="">Select order type</option>
+                      <option value="Dine-in">Dine-in</option>
+                      <option value="Pickup">Pickup</option>
+                      <option value="Delivery">Delivery</option>
+                    </select>
+                    <div class="error-message" *ngIf="getFieldError('orderType')">
+                      {{ getFieldError('orderType') }}
+                    </div>
+                  </div>
+                  
+                  <div class="form-group">
+                    <label for="favoriteItem">Favorite Item</label>
+                    <input 
+                      type="text" 
+                      id="favoriteItem" 
+                      formControlName="favoriteItem"
+                      placeholder="What was your favorite dish?">
+                  </div>
+                </div>
+              </div>
+
+              <!-- Review Comment -->
+              <div class="form-section">
+                <h3>Your Review</h3>
+                <div class="form-group">
+                  <label for="comment">Tell us about your experience *</label>
+                  <textarea 
+                    id="comment" 
+                    formControlName="comment"
+                    placeholder="Share your thoughts about the food, service, atmosphere, or anything else..."
+                    rows="5"
+                    [class.error]="reviewForm.get('comment')?.invalid && reviewForm.get('comment')?.touched"></textarea>
+                  <div class="character-count">
+                    {{ reviewForm.get('comment')?.value?.length || 0 }}/500 characters
+                  </div>
+                  <div class="error-message" *ngIf="getFieldError('comment')">
+                    {{ getFieldError('comment') }}
+                  </div>
+                </div>
+              </div>
+
+              <!-- Submit Button -->
+              <div class="form-actions">
+                <button 
+                  type="submit" 
+                  class="submit-btn"
+                  [class.loading]="isSubmitting"
+                  [disabled]="reviewForm.invalid || isSubmitting">
+                  <span *ngIf="!isSubmitting">
+                    <span class="btn-icon">📝</span>
+                    Submit Review
+                  </span>
+                  <span *ngIf="isSubmitting">
+                    <span class="spinner"></span>
+                    Submitting...
+                  </span>
+                </button>
+              </div>
+            </form>
+          </div>
+        </section>
+      </div>
+    </div>
+  </div>
+</div>

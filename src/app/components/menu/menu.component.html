@@ -1,0 +1,122 @@
+<div class="menu-page">
+  <!-- Page Header -->
+  <section class="page-header">
+    <div class="container">
+      <div class="header-content text-center">
+        <h1>Our Menu</h1>
+        <p>Discover authentic Indian flavors crafted with traditional recipes and the finest ingredients</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Menu Navigation -->
+  <section class="menu-navigation">
+    <div class="container">
+      <div class="nav-tabs">
+        <button 
+          *ngFor="let category of menuCategories" 
+          class="nav-tab"
+          [class.active]="activeCategory === category.id"
+          (click)="setActiveCategory(category.id)">
+          {{ category.name }}
+        </button>
+      </div>
+    </div>
+  </section>
+
+  <!-- Menu Content -->
+  <section class="menu-content section">
+    <div class="container">
+      <div class="category-header text-center">
+        <h2>{{ getActiveCategory().name }}</h2>
+        <p>{{ getActiveCategory().description }}</p>
+      </div>
+
+      <div class="menu-items">
+        <div class="row">
+          <div class="col-6" *ngFor="let item of getActiveCategory().items">
+            <div class="menu-item card fade-in">
+              <div class="item-image" *ngIf="item.image">
+                <img [src]="item.image" [alt]="item.name" />
+                <div class="item-badges">
+                  <span class="badge popular" *ngIf="item.popular">Popular</span>
+                  <div class="dietary-icons">
+                    <span *ngFor="let icon of getDietaryIcons(item)" [title]="getDietaryTitle(icon)">{{ icon }}</span>
+                  </div>
+                </div>
+              </div>
+
+              <div class="item-content">
+                <div class="item-header">
+                  <h3>{{ item.name }}</h3>
+                  <span class="price">${{ item.price }}</span>
+                </div>
+
+                <p class="description">{{ item.description }}</p>
+
+                <div class="item-details">
+                  <div class="spice-level" *ngIf="item.spiceLevel > 0">
+                    <span class="label">Spice Level:</span>
+                    <span *ngFor="let spice of getSpiceIcons(item.spiceLevel)">{{ spice }}</span>
+                  </div>
+
+                  <div class="dietary-info">
+                    <span class="dietary-tag" *ngIf="item.vegetarian">Vegetarian</span>
+                    <span class="dietary-tag" *ngIf="item.vegan">Vegan</span>
+                    <span class="dietary-tag" *ngIf="item.glutenFree">Gluten Free</span>
+                  </div>
+                </div>
+
+                <div class="item-actions">
+                  <a routerLink="/order" class="btn btn-primary btn-sm">Add to Order</a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Menu Legend -->
+  <section class="menu-legend section">
+    <div class="container">
+      <div class="legend-content">
+        <h3>Menu Legend</h3>
+        <div class="legend-items">
+          <div class="legend-item">
+            <span class="icon">🥬</span>
+            <span>Vegetarian</span>
+          </div>
+          <div class="legend-item">
+            <span class="icon">🌱</span>
+            <span>Vegan</span>
+          </div>
+          <div class="legend-item">
+            <span class="icon">🌾</span>
+            <span>Gluten Free</span>
+          </div>
+          <div class="legend-item">
+            <span class="icon">🌶️</span>
+            <span>Spice Level (1-4)</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Call to Action -->
+  <section class="menu-cta section">
+    <div class="container">
+      <div class="cta-content text-center">
+        <h2>Ready to Order?</h2>
+        <p>Experience these authentic flavors at Curry Palace</p>
+        <div class="cta-buttons">
+          <a routerLink="/order" class="btn btn-primary">Order Online</a>
+          <a routerLink="/contact" class="btn btn-secondary">Book a Table</a>
+          <a href="tel:+61391234567" class="btn btn-outline">Call (03) 9123 4567</a>
+        </div>
+      </div>
+    </div>
+  </section>
+</div>

@@ -1,0 +1,351 @@
+<div class="order-container">
+  <!-- Hero Section -->
+  <section class="order-hero">
+    <div class="hero-content">
+      <h1>Order Online</h1>
+      <p class="hero-subtitle">Enjoy authentic Indian cuisine from the comfort of your home</p>
+      
+      <!-- Order Type Selection -->
+      <div class="order-type-selector">
+        <button 
+          class="type-btn"
+          [class.active]="orderType === 'pickup'"
+          (click)="setOrderType('pickup')">
+          <span class="type-icon">🏪</span>
+          <span class="type-text">Pickup</span>
+          <span class="type-time">Ready in 20-30 mins</span>
+        </button>
+        <button 
+          class="type-btn"
+          [class.active]="orderType === 'delivery'"
+          (click)="setOrderType('delivery')">
+          <span class="type-icon">🚗</span>
+          <span class="type-text">Delivery</span>
+          <span class="type-time">{{ getEstimatedTime() }}</span>
+        </button>
+      </div>
+    </div>
+  </section>
+
+  <!-- Success Message -->
+  <div class="success-overlay" *ngIf="orderSuccess">
+    <div class="success-message">
+      <div class="success-icon">✅</div>
+      <h2>Order Placed Successfully!</h2>
+      <p>Thank you for your order. We'll start preparing your delicious meal right away.</p>
+      <div class="order-details">
+        <p><strong>Order Type:</strong> {{ orderType | titlecase }}</p>
+        <p><strong>Estimated Time:</strong> {{ getEstimatedTime() }}</p>
+        <p><strong>Total:</strong> ${{ getCartTotal().toFixed(2) }}</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Main Content -->
+  <div class="order-main">
+    <div class="container">
+      <div class="order-layout">
+        
+        <!-- Menu Section -->
+        <div class="menu-section">
+          <h2>Choose Your Dishes</h2>
+          
+          <!-- Category Navigation -->
+          <div class="category-nav">
+            <button 
+              *ngFor="let category of menuCategories"
+              class="category-btn"
+              [class.active]="activeCategory === category.id"
+              (click)="setActiveCategory(category.id)">
+              <span class="category-icon">{{ category.icon }}</span>
+              <span class="category-name">{{ category.name }}</span>
+            </button>
+          </div>
+
+          <!-- Menu Items -->
+          <div class="menu-items">
+            <div class="menu-item" *ngFor="let item of getFilteredItems()">
+              <div class="item-image">
+                <img [src]="item.image" [alt]="item.name" 
+                     onerror="this.style.display='none'; this.nextElementSibling.style.display='flex'">
+                <div class="image-placeholder" style="display: none;">🍽️</div>
+                <div class="popular-badge" *ngIf="item.popular">Popular</div>
+              </div>
+              
+              <div class="item-details">
+                <h3>{{ item.name }}</h3>
+                <p class="item-description">{{ item.description }}</p>
+                
+                <div class="item-indicators">
+                  <div class="spice-level" *ngIf="item.spiceLevel > 0">
+                    <span class="spice-label">Spice:</span>
+                    <span class="spice-icons">
+                      <span *ngFor="let icon of getSpiceIcons(item.spiceLevel)">{{ icon }}</span>
+                    </span>
+                  </div>
+                  
+                  <div class="dietary-info">
+                    <span 
+                      *ngFor="let icon of getDietaryIcons(item)" 
+                      class="dietary-icon"
+                      [title]="icon === '🥬' ? 'Vegetarian' : icon === '🌱' ? 'Vegan' : 'Gluten Free'">
+                      {{ icon }}
+                    </span>
+                  </div>
+                </div>
+              </div>
+              
+              <div class="item-actions">
+                <div class="item-price">${{ item.price.toFixed(2) }}</div>
+                <button class="add-btn" (click)="addToCart(item)">
+                  Add to Cart
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Order Summary & Form -->
+        <div class="order-sidebar">
+          
+          <!-- Cart Summary -->
+          <div class="cart-summary">
+            <div class="cart-header">
+              <h3>Your Order</h3>
+              <span class="cart-count">{{ getCartItemCount() }} items</span>
+            </div>
+            
+            <div class="cart-items" *ngIf="cart.length > 0; else emptyCart">
+              <div class="cart-item" *ngFor="let item of cart">
+                <div class="cart-item-details">
+                  <h4>{{ item.menuItem.name }}</h4>
+                  <p class="cart-item-price">${{ item.menuItem.price.toFixed(2) }} each</p>
+                </div>
+                <div class="cart-item-controls">
+                  <div class="quantity-controls">
+                    <button class="qty-btn" (click)="updateQuantity(item.menuItem.id, item.quantity - 1)">-</button>
+                    <span class="quantity">{{ item.quantity }}</span>
+                    <button class="qty-btn" (click)="updateQuantity(item.menuItem.id, item.quantity + 1)">+</button>
+                  </div>
+                  <button class="remove-btn" (click)="removeFromCart(item.menuItem.id)">×</button>
+                </div>
+              </div>
+              
+              <div class="cart-totals">
+                <div class="total-line">
+                  <span>Subtotal:</span>
+                  <span>${{ getCartSubtotal().toFixed(2) }}</span>
+                </div>
+                <div class="total-line" *ngIf="orderType === 'delivery'">
+                  <span>Delivery Fee:</span>
+                  <span>${{ getDeliveryFee().toFixed(2) }}</span>
+                </div>
+                <div class="total-line total-final">
+                  <span>Total:</span>
+                  <span>${{ getCartTotal().toFixed(2) }}</span>
+                </div>
+              </div>
+            </div>
+            
+            <ng-template #emptyCart>
+              <div class="empty-cart">
+                <div class="empty-icon">🛒</div>
+                <p>Your cart is empty</p>
+                <p class="empty-subtitle">Add some delicious items to get started!</p>
+              </div>
+            </ng-template>
+          </div>
+
+          <!-- Order Form -->
+          <form [formGroup]="orderForm" (ngSubmit)="onSubmit()" class="order-form" *ngIf="cart.length > 0">
+            
+            <!-- Customer Information -->
+            <div class="form-section">
+              <h3>Customer Information</h3>
+              <div class="form-row">
+                <div class="form-group">
+                  <label for="firstName">First Name *</label>
+                  <input 
+                    type="text" 
+                    id="firstName" 
+                    formControlName="firstName"
+                    [class.error]="isFieldInvalid('firstName')"
+                    placeholder="Enter first name">
+                  <div class="error-message" *ngIf="isFieldInvalid('firstName')">
+                    {{ getFieldError('firstName') }}
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label for="lastName">Last Name *</label>
+                  <input 
+                    type="text" 
+                    id="lastName" 
+                    formControlName="lastName"
+                    [class.error]="isFieldInvalid('lastName')"
+                    placeholder="Enter last name">
+                  <div class="error-message" *ngIf="isFieldInvalid('lastName')">
+                    {{ getFieldError('lastName') }}
+                  </div>
+                </div>
+              </div>
+              
+              <div class="form-group">
+                <label for="email">Email Address *</label>
+                <input 
+                  type="email" 
+                  id="email" 
+                  formControlName="email"
+                  [class.error]="isFieldInvalid('email')"
+                  placeholder="Enter email address">
+                <div class="error-message" *ngIf="isFieldInvalid('email')">
+                  {{ getFieldError('email') }}
+                </div>
+              </div>
+              
+              <div class="form-group">
+                <label for="phone">Phone Number *</label>
+                <input 
+                  type="tel" 
+                  id="phone" 
+                  formControlName="phone"
+                  [class.error]="isFieldInvalid('phone')"
+                  placeholder="Enter phone number">
+                <div class="error-message" *ngIf="isFieldInvalid('phone')">
+                  {{ getFieldError('phone') }}
+                </div>
+              </div>
+            </div>
+
+            <!-- Delivery Information -->
+            <div class="form-section" *ngIf="orderType === 'delivery'">
+              <h3>Delivery Information</h3>
+              <div class="form-group">
+                <label for="address">Street Address *</label>
+                <input 
+                  type="text" 
+                  id="address" 
+                  formControlName="address"
+                  [class.error]="isFieldInvalid('address')"
+                  placeholder="Enter street address">
+                <div class="error-message" *ngIf="isFieldInvalid('address')">
+                  {{ getFieldError('address') }}
+                </div>
+              </div>
+              
+              <div class="form-row">
+                <div class="form-group">
+                  <label for="suburb">Suburb *</label>
+                  <select id="suburb" formControlName="suburb" [class.error]="isFieldInvalid('suburb')">
+                    <option value="">Select suburb</option>
+                    <option *ngFor="let area of deliveryAreas" [value]="area.suburb">
+                      {{ area.suburb }}
+                    </option>
+                  </select>
+                  <div class="error-message" *ngIf="isFieldInvalid('suburb')">
+                    {{ getFieldError('suburb') }}
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label for="postcode">Postcode *</label>
+                  <input 
+                    type="text" 
+                    id="postcode" 
+                    formControlName="postcode"
+                    [class.error]="isFieldInvalid('postcode')"
+                    placeholder="4-digit postcode">
+                  <div class="error-message" *ngIf="isFieldInvalid('postcode')">
+                    {{ getFieldError('postcode') }}
+                  </div>
+                </div>
+              </div>
+              
+              <div class="form-group">
+                <label for="deliveryInstructions">Delivery Instructions</label>
+                <textarea 
+                  id="deliveryInstructions" 
+                  formControlName="deliveryInstructions"
+                  rows="3"
+                  placeholder="Any special delivery instructions..."></textarea>
+              </div>
+            </div>
+
+            <!-- Order Timing -->
+            <div class="form-section">
+              <h3>When do you want your order?</h3>
+              <div class="timing-options">
+                <label class="radio-option">
+                  <input type="radio" formControlName="preferredTime" value="asap">
+                  <span class="radio-text">As soon as possible</span>
+                </label>
+                <label class="radio-option">
+                  <input type="radio" formControlName="preferredTime" value="custom">
+                  <span class="radio-text">Choose specific time</span>
+                </label>
+              </div>
+              
+              <div class="form-group" *ngIf="orderForm.get('preferredTime')?.value === 'custom'">
+                <label for="customTime">Preferred Time</label>
+                <input 
+                  type="time" 
+                  id="customTime" 
+                  formControlName="customTime">
+              </div>
+            </div>
+
+            <!-- Special Requests -->
+            <div class="form-section">
+              <div class="form-group">
+                <label for="specialRequests">Special Requests</label>
+                <textarea 
+                  id="specialRequests" 
+                  formControlName="specialRequests"
+                  rows="3"
+                  placeholder="Any dietary requirements, allergies, or special instructions..."></textarea>
+              </div>
+            </div>
+
+            <!-- Payment Method -->
+            <div class="form-section">
+              <h3>Payment Method</h3>
+              <div class="payment-options">
+                <label class="radio-option">
+                  <input type="radio" formControlName="paymentMethod" value="cash">
+                  <span class="radio-text">💵 Cash on {{ orderType === 'pickup' ? 'pickup' : 'delivery' }}</span>
+                </label>
+                <label class="radio-option">
+                  <input type="radio" formControlName="paymentMethod" value="card">
+                  <span class="radio-text">💳 Card on {{ orderType === 'pickup' ? 'pickup' : 'delivery' }}</span>
+                </label>
+              </div>
+            </div>
+
+            <!-- Submit Button -->
+            <div class="form-actions">
+              <button 
+                type="submit" 
+                class="place-order-btn"
+                [disabled]="isSubmitting || cart.length === 0"
+                [class.loading]="isSubmitting">
+                <span *ngIf="!isSubmitting">
+                  Place Order - ${{ getCartTotal().toFixed(2) }}
+                </span>
+                <span *ngIf="isSubmitting">
+                  <span class="spinner"></span>
+                  Processing Order...
+                </span>
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Cart Notification -->
+  <div class="cart-notification" [class.show]="showCart">
+    <div class="notification-content">
+      <span class="notification-icon">✅</span>
+      <span class="notification-text">Item added to cart!</span>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,145 @@
+<div class="gallery-container" (keydown)="onKeydown($event)" tabindex="0">
+  <!-- Hero Section -->
+  <section class="gallery-hero">
+    <div class="hero-content">
+      <h1>Our Gallery</h1>
+      <p class="hero-subtitle">Discover the beauty of authentic Indian cuisine and our warm, welcoming atmosphere</p>
+    </div>
+  </section>
+
+  <!-- Featured Images Section -->
+  <section class="featured-section">
+    <div class="container">
+      <h2>Featured Highlights</h2>
+      <div class="featured-grid">
+        <div class="featured-item" *ngFor="let image of getFeaturedImages()" (click)="openLightbox(image)">
+          <div class="image-container">
+            <img [src]="image.src" [alt]="image.alt" 
+                 onerror="this.style.display='none'; this.nextElementSibling.style.display='flex'">
+            <div class="image-placeholder" style="display: none;">📸</div>
+            <div class="image-overlay">
+              <div class="overlay-content">
+                <h3>{{ image.title }}</h3>
+                <p>{{ image.description }}</p>
+                <span class="view-btn">View Full Size</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Gallery Navigation -->
+  <section class="gallery-navigation">
+    <div class="container">
+      <h2>Browse by Category</h2>
+      <div class="category-tabs">
+        <button 
+          *ngFor="let category of categories"
+          class="category-tab"
+          [class.active]="activeCategory === category.id"
+          (click)="setActiveCategory(category.id)">
+          <span class="tab-icon">{{ category.icon }}</span>
+          <span class="tab-text">{{ category.name }}</span>
+          <span class="tab-count">({{ getCategoryImageCount(category.id) }})</span>
+        </button>
+      </div>
+      <div class="category-description">
+        <p>{{ getActiveCategory().description }} - {{ getImageCount() }} images</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Gallery Grid -->
+  <section class="gallery-grid-section">
+    <div class="container">
+      <div class="gallery-grid">
+        <div 
+          class="gallery-item" 
+          *ngFor="let image of getFilteredImages(); let i = index"
+          (click)="openLightbox(image)"
+          [style.animation-delay]="(i * 0.1) + 's'">
+          <div class="image-container">
+            <img [src]="image.src" [alt]="image.alt" 
+                 onerror="this.style.display='none'; this.nextElementSibling.style.display='flex'">
+            <div class="image-placeholder" style="display: none;">
+              <span class="placeholder-icon">📸</span>
+              <span class="placeholder-text">{{ image.title }}</span>
+            </div>
+            <div class="image-overlay">
+              <div class="overlay-content">
+                <h3>{{ image.title }}</h3>
+                <p>{{ image.description }}</p>
+                <div class="image-meta">
+                  <span class="category-badge">{{ getCategoryName(image.category) }}</span>
+                  <span class="featured-badge" *ngIf="image.featured">⭐ Featured</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Empty State -->
+      <div class="empty-state" *ngIf="getFilteredImages().length === 0">
+        <div class="empty-icon">📷</div>
+        <h3>No images found</h3>
+        <p>There are no images in this category yet. Check back soon for updates!</p>
+        <button class="back-btn" (click)="setActiveCategory('all')">View All Images</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- Call to Action -->
+  <section class="gallery-cta">
+    <div class="container">
+      <div class="cta-content">
+        <h2>Experience It Yourself</h2>
+        <p>These images are just a taste of what awaits you at Curry Palace. Come and create your own memorable dining experience.</p>
+        <div class="cta-buttons">
+          <a routerLink="/menu" class="btn btn-primary">View Our Menu</a>
+          <a routerLink="/contact" class="btn btn-secondary">Make a Reservation</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Lightbox Modal -->
+  <div class="lightbox-overlay" *ngIf="isLightboxOpen" (click)="closeLightbox()">
+    <div class="lightbox-container" (click)="$event.stopPropagation()">
+      <button class="lightbox-close" (click)="closeLightbox()" aria-label="Close lightbox">
+        ✕
+      </button>
+      
+      <button class="lightbox-nav lightbox-prev" (click)="previousImage()" aria-label="Previous image">
+        ‹
+      </button>
+      
+      <button class="lightbox-nav lightbox-next" (click)="nextImage()" aria-label="Next image">
+        ›
+      </button>
+
+      <div class="lightbox-content" *ngIf="selectedImage">
+        <div class="lightbox-image-container">
+          <img [src]="selectedImage.src" [alt]="selectedImage.alt" 
+               onerror="this.style.display='none'; this.nextElementSibling.style.display='flex'">
+          <div class="image-placeholder" style="display: none;">
+            <span class="placeholder-icon">📸</span>
+            <span class="placeholder-text">{{ selectedImage.title }}</span>
+          </div>
+        </div>
+        
+        <div class="lightbox-info">
+          <h3>{{ selectedImage.title }}</h3>
+          <p>{{ selectedImage.description }}</p>
+          <div class="lightbox-meta">
+            <span class="category-badge">{{ getCategoryName(selectedImage.category) }}</span>
+            <span class="featured-badge" *ngIf="selectedImage.featured">⭐ Featured</span>
+            <span class="image-counter">{{ currentImageIndex + 1 }} of {{ getFilteredImages().length }}</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

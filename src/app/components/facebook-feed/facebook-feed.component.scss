@@ -1,0 +1,325 @@
+.facebook-feed {
+  width: 100%;
+}
+
+// Loading State
+.loading-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 3rem 0;
+}
+
+.loading-spinner {
+  text-align: center;
+
+  .loading {
+    margin: 0 auto 1rem;
+  }
+
+  p {
+    color: var(--medium-gray);
+    font-size: 1rem;
+  }
+}
+
+// Error State
+.error-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 3rem 0;
+}
+
+.error-message {
+  text-align: center;
+  max-width: 400px;
+
+  h4 {
+    color: var(--primary-red);
+    margin-bottom: 1rem;
+    font-size: 1.3rem;
+  }
+
+  p {
+    color: var(--medium-gray);
+    margin-bottom: 1.5rem;
+    line-height: 1.5;
+  }
+}
+
+// Posts Container
+.posts-container {
+  width: 100%;
+}
+
+.facebook-post {
+  height: 100%;
+  border: 1px solid #e1e8ed;
+  transition: all 0.3s ease;
+
+  &:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 25px var(--shadow-dark);
+  }
+}
+
+.post-image {
+  height: 200px;
+  overflow: hidden;
+
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.3s ease;
+  }
+
+  &:hover img {
+    transform: scale(1.05);
+  }
+}
+
+.post-content {
+  padding: 1.5rem;
+}
+
+.post-header {
+  display: flex;
+  align-items: center;
+  margin-bottom: 1rem;
+  padding-bottom: 0.75rem;
+  border-bottom: 1px solid #f0f0f0;
+
+  .facebook-icon {
+    margin-right: 0.75rem;
+    flex-shrink: 0;
+  }
+
+  .post-info {
+    flex: 1;
+
+    strong {
+      display: block;
+      color: var(--dark-brown);
+      font-size: 0.95rem;
+      margin-bottom: 0.25rem;
+    }
+
+    .post-time {
+      color: var(--medium-gray);
+      font-size: 0.85rem;
+    }
+  }
+}
+
+.post-message,
+.post-story {
+  margin-bottom: 1.5rem;
+
+  p {
+    color: var(--dark-brown);
+    line-height: 1.6;
+    font-size: 0.95rem;
+    margin: 0;
+
+    // Limit text to 3 lines with ellipsis
+    display: -webkit-box;
+    -webkit-line-clamp: 4;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+}
+
+.post-actions {
+  display: flex;
+  justify-content: flex-end;
+
+  .btn-sm {
+    padding: 0.5rem 1rem;
+    font-size: 0.85rem;
+    border-radius: 20px;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+
+    &:hover {
+      text-decoration: none;
+    }
+
+    &::before {
+      content: '👁️';
+      font-size: 0.8rem;
+    }
+  }
+}
+
+.no-posts {
+  text-align: center;
+  padding: 3rem 0;
+  color: var(--medium-gray);
+
+  p {
+    font-size: 1.1rem;
+    margin: 0;
+  }
+}
+
+// Responsive Design
+@media (max-width: 768px) {
+  .facebook-post {
+    margin-bottom: 1.5rem;
+  }
+
+  .post-image {
+    height: 180px;
+  }
+
+  .post-content {
+    padding: 1rem;
+  }
+
+  .post-header {
+    margin-bottom: 0.75rem;
+    padding-bottom: 0.5rem;
+
+    .post-info {
+      strong {
+        font-size: 0.9rem;
+      }
+
+      .post-time {
+        font-size: 0.8rem;
+      }
+    }
+  }
+
+  .post-message,
+  .post-story {
+    margin-bottom: 1rem;
+
+    p {
+      font-size: 0.9rem;
+      -webkit-line-clamp: 3;
+    }
+  }
+
+  .post-actions {
+    .btn-sm {
+      padding: 0.4rem 0.8rem;
+      font-size: 0.8rem;
+    }
+  }
+
+  .loading-container,
+  .error-container {
+    padding: 2rem 0;
+  }
+
+  .error-message {
+    h4 {
+      font-size: 1.2rem;
+    }
+
+    p {
+      font-size: 0.95rem;
+    }
+  }
+}
+
+@media (max-width: 480px) {
+  .post-image {
+    height: 160px;
+  }
+
+  .post-content {
+    padding: 0.75rem;
+  }
+
+  .post-header {
+    .facebook-icon {
+      margin-right: 0.5rem;
+
+      svg {
+        width: 18px;
+        height: 18px;
+      }
+    }
+
+    .post-info {
+      strong {
+        font-size: 0.85rem;
+      }
+
+      .post-time {
+        font-size: 0.75rem;
+      }
+    }
+  }
+
+  .post-message,
+  .post-story {
+    p {
+      font-size: 0.85rem;
+      -webkit-line-clamp: 2;
+    }
+  }
+
+  .post-actions {
+    .btn-sm {
+      padding: 0.35rem 0.7rem;
+      font-size: 0.75rem;
+
+      &::before {
+        font-size: 0.7rem;
+      }
+    }
+  }
+
+  .loading-container,
+  .error-container {
+    padding: 1.5rem 0;
+  }
+
+  .loading-spinner {
+    p {
+      font-size: 0.9rem;
+    }
+  }
+
+  .error-message {
+    h4 {
+      font-size: 1.1rem;
+    }
+
+    p {
+      font-size: 0.9rem;
+    }
+  }
+
+  .no-posts {
+    padding: 2rem 0;
+
+    p {
+      font-size: 1rem;
+    }
+  }
+}
+
+// Animation for posts
+.fade-in {
+  animation: fadeInUp 0.6s ease-out;
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
