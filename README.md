@@ -1,6 +1,6 @@
-# Curry Palace Website
+# The Restaurant Website
 
-A modern, responsive website for Curry Palace Indian Restaurant built with Angular 17+ and TypeScript.
+A modern, responsive website for Restaurant built with Angular 17+ and TypeScript.
 
 ## 🚀 Features
 
