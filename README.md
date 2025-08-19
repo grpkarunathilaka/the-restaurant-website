@@ -527,7 +527,7 @@ For technical support or questions about this implementation:
 
 ## 📄 License
 
-This project is created for Curry Palace Restaurant. All rights reserved.
+All rights reserved.
 
 ---
 
